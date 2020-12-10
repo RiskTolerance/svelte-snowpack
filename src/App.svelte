@@ -2,16 +2,25 @@
 <script>
 	import { onMount } from 'svelte';
 	import dayjs from 'dayjs';
+	import mix from 'mix-color';
 
+	//time variables
 	let now = dayjs();
 	let hour = now['$H'];
 	let minute = now["$m"];
-	let count = 0;
-	let dayProgress = Math.round(((hour + minute / 60) / 24) * 100);
+	let dayProgress = (((hour + minute / 60) / 24) * 100).toFixed(0);
+	let hourProgress = (minute/60).toFixed(2);
+	console.log(`hour progress = ${hourProgress}`)
+	console.log(now);
+	//console.log(`day progress = ${dayProgress}`)
+	//color variables
+	const colorAnchorsAM = ["41,40,61","42,40,60","50,43,61","65,47,63","90,53,67","131,62,75","189,77,85","206,119,99","223,193,126","242,220,137","250,238,142","252,248,146"];
+	const colorAnchorsPM = [...colorAnchorsAM.reverse()];
+	console.log(colorAnchorsPM);
+	let backgroundcolor = mix(`rgb(${colorAnchorsPM[5]})`,`rgb(${colorAnchorsPM[7]})`, 0.15);
 
 	onMount(() => {
 		const interval = setInterval(() => {
-			count++;
 			now = dayjs();
 			hour = now['$H'];
 			minute = now["$m"];
@@ -21,18 +30,6 @@
 			clearInterval(interval);
 		};
 	});
-
-	let clicker = 0;
-	$: doubled = clicker * 2;
-	function handleClick() {
-		if (clicker > 49) {
-			alert(`no going over 100!`);
-			clicker = 0;
-			doubled = 0;
-			return;
-		}
-		clicker += 1;
-	}
 </script>
 
 <style>
@@ -63,12 +60,7 @@
 </style>
 
 <div class="App">
-	<header class="App-header">
+<header style="background-color: {backgroundcolor}" class="App-header">
 		<img src="/logo.svg" class="App-logo" alt="logo" />
-		<p>Page has been open for <code>{count}</code> seconds.</p>
-		<button on:click={handleClick}>Clicked
-			{clicker}
-			{count === 1 ? 'time' : 'times'}</button>
-		<p>{clicker} doubled is {doubled}</p>
 	</header>
 </div>

@@ -1,6 +1,5 @@
 import App from "./App.svelte";
 import confetti from 'canvas-confetti';
-import { DateTime } from "luxon";
 
 confetti.create(document.getElementById('canvas'), {
   resize: true,
