@@ -6,7 +6,6 @@
 	import SocialLinks from "./SocialLinks.svelte";
 	import IntroText from "./IntroText.svelte";
 	import ForestStreamLogo from "./ForestStreamLogo.svelte";
-	import ForestBackground from "./ForestBackground.svelte";
 
 	let now = dayjs();
 	let hour = now["$H"];
@@ -56,8 +55,8 @@
 	};
 	calcBgColor();
 
-	let fillColor = hour < 9 | hour > 14 ? "white" : "black";
-	let textColor = hour < 9 | hour > 14 ? "white" : "black";
+	let fillColor = (hour < 9) | (hour > 14) ? "white" : "black";
+	let textColor = (hour < 9) | (hour > 14) ? "white" : "black";
 
 	onMount(() => {
 		const interval = setInterval(() => {
@@ -66,8 +65,8 @@
 			minute = now["$m"];
 			hourProgress = (minute / 60).toFixed(2);
 			calcBgColor();
-			fillColor = hour < 9 | hour > 14 ? "white" : "black";
-			textColor = hour < 9 | hour > 14 ? "white" : "black";
+			fillColor = (hour < 9) | (hour > 14) ? "white" : "black";
+			textColor = (hour < 9) | (hour > 14) ? "white" : "black";
 			//console.log(`The time is ${hour}:${minute} and the day is ${dayProgress}% complete`);
 		}, 10000);
 		return () => {
@@ -88,14 +87,23 @@
 		font-size: calc(10px + 2vmin);
 		overflow: hidden;
 	}
+
+	#background-image {
+		position: absolute;
+		bottom: -100px;
+		margin: 0;
+		width: 110vw;
+		opacity: 50%;
+		z-index: 0;
+		mix-blend-mode: overlay;
+	}
 </style>
 
 <div class="App">
 	<header style="background-color: {backgroundColor}" class="App-header">
-		<!-- <img src="/fsslogo.svg" class="App-logo" alt="logo" /> -->
-		<ForestStreamLogo {fillColor}/>
+		<ForestStreamLogo {fillColor} />
 		<IntroText {textColor} />
 		<SocialLinks />
-		<ForestBackground />
+		<img id="background-image" src="/forest.webp" alt="forest" />
 	</header>
 </div>
