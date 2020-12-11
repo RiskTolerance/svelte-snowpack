@@ -9,8 +9,6 @@ confetti.create(document.getElementById('canvas'), {
 
 let app = new App({
   target: document.body,
-  props: {
-  }
 });
 
 export default app;

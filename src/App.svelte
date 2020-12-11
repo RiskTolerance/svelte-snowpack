@@ -3,6 +3,8 @@
 	import { onMount } from 'svelte';
 	import dayjs from 'dayjs';
 	import mix from 'mix-color';
+	import SocialLinks from './SocialLinks.svelte';
+	import IntroText from './IntroText.svelte';
 
 	let now = dayjs();
 	let hour = now['$H'];
@@ -44,13 +46,18 @@
 			now = dayjs();
 			hour = now['$H'];
 			minute = now['$m'];
-			backgroundColor = mix(
-				`rgb(${colorAnchors[hour]})`,
-				`rgb(${colorAnchors[hour + 1]})`,
-				`${hourProgress}`
-			);
+			hourProgress = (minute / 60).toFixed(2);
+			if (hour < 24) {
+				backgroundColor = mix(
+					`rgb(${colorAnchors[hour]})`,
+					`rgb(${colorAnchors[hour + 1]})`,
+					`${hourProgress}`
+				);
+			} else {
+				backgroundColor = `rgb(${colorAnchors[hour]})`;
+			}
 			//console.log(`The time is ${hour}:${minute} and the day is ${dayProgress}% complete`);
-		}, 10000);
+		}, 1000);
 		return () => {
 			clearInterval(interval);
 		};
@@ -59,33 +66,40 @@
 
 <style>
 	.App-header {
-		background-color: #f9f6f6;
-		color: #333;
-		min-height: 100vh;
+		position: absolute;
+		height: 100vh;
+		width: 100vw;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		font-size: calc(10px + 2vmin);
+		overflow: hidden;
 	}
 	.App-logo {
-		height: 36vmin;
+		height: 25vmin;
+		width: 80vmin;
+		margin-top: 20px;
 		pointer-events: none;
-		margin-bottom: 3rem;
 		animation: App-logo-pulse infinite 1.6s ease-in-out alternate;
+		
 	}
-	@keyframes App-logo-pulse {
-		from {
-			transform: scale(1);
-		}
-		to {
-			transform: scale(1.06);
-		}
+	#bg-image {
+		position: absolute;
+		bottom: -100px;
+		margin: 0;
+		width: 110vw;
+		opacity: 50%;
+		z-index: 0;
+		mix-blend-mode: overlay;
 	}
 </style>
 
 <div class="App">
 	<header style="background-color: {backgroundColor}" class="App-header">
-		<img src="/logo.svg" class="App-logo" alt="logo" />
+		<img src="/fsslogo.svg" class="App-logo" alt="logo" />
+		<IntroText/>
+		<SocialLinks/>
+		<img id="bg-image" src="/forest.svg" alt="forest background">
 	</header>
 </div>
